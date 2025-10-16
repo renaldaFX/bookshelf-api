@@ -1,0 +1,42 @@
+[
+    {
+        "name": "The Power of Now",
+        "year": 1997,
+        "author": "Eckhart Tolle",
+        "summary": "Panduan spiritual untuk hidup di masa sekarang.",
+        "publisher": "New World Library",
+        "pageCount": 237,
+        "readPage": 50,
+        "reading": true
+    },
+    {
+        "name": "Dune",
+        "year": 1965,
+        "author": "Frank Herbert",
+        "summary": "Kisah Paul Atreides di planet padang pasir Arrakis.",
+        "publisher": "Chilton Books",
+        "pageCount": 412,
+        "readPage": 10,
+        "reading": true
+    },
+    {
+        "name": "Puisi Senja",
+        "year": 2023,
+        "author": "Penyair Lokal",
+        "summary": "Kumpulan puisi singkat tentang matahari terbenam.",
+        "publisher": "Penerbit Puisi",
+        "pageCount": 50,
+        "readPage": 50,
+        "reading": false
+    },
+    {
+        "name": "Filosofi Teras",
+        "year": 2017,
+        "author": "Henry Manampiring",
+        "summary": "Pengantar filsafat Stoa yang relevan untuk kehidupan modern.",
+        "publisher": "Kompas Gramedia",
+        "pageCount": 346,
+        "readPage": 346,
+        "reading": false
+    }
+]
