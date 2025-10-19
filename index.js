@@ -110,6 +110,24 @@ app.put('/books/:bookId', (req, res) => {
     });
 });
 
+//deleting book by ID
+app.delete('/books/:bookId', (req, res) => {
+  const {bookId} = req.params;
+  const index = books.findIndex((b) => b.id === bookId);
+  if (index !== -1) {
+    books.splice(index, 1);
+    return res.status(200).json({
+      status: 'success',
+      message: 'Buku berhasil dihapus'
+    });
+  } else {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Buku tidak ditemukan'
+    });
+  };
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 })
