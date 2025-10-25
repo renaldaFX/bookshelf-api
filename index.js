@@ -25,20 +25,39 @@ app.post('/books', (req, res) => {
   if (!name) {
     return res.status(400).json({
       status: 'fail',
-      message: 'Gagal menambahkan buku. Mohon isi nama buku'
+      message: 'Gagal menambahkan buku. Mohon isi nama buku',
+      data: {books}
     });
-  };
+  }
   books.push(book);
-  res.status(201).send('Book added');
+  const formatted = books.map((b) => {
+      return {
+        bookId: b.id,
+        name: b.name,
+        publisher: b.publisher
+      }
+})
+  res.status(201).json({
+    status: 'success',
+    message: 'Buku berhasil ditambahkan',
+    data: {formatted}
+  });
 });
 
 // get all books
 app.get('/books', (req, res) => {
-  res.json({
+  res.status(200).json({
     status: 'success',
-    data: {books}
-  }).status(200);
-})
+    data: {
+      books: books.map((b) => ({
+        id: b.id,
+        name: b.name,
+        publisher: b.publisher
+      }))
+    }
+  });
+});
+
 
 //get book by ID
 app.get('/books/:bookId', (req, res) => {
@@ -48,7 +67,10 @@ app.get('/books/:bookId', (req, res) => {
     return res.status(200).json({status: 'success', data: {book}}); 
   } else {
     // Respons ketika buku tidak ditemukan
-    return res.status(404).send('Book not found');
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Buku tidak ditemukan'
+    });
   }
 })
 
@@ -62,7 +84,8 @@ app.put('/books/:bookId', (req, res) => {
     if (!name) {
         return res.status(400).json({
             status: 'fail',
-            message: 'Gagal memperbarui buku. Mohon isi nama buku'
+            message: 'Gagal memperbarui buku. Mohon isi nama buku',
+            data: {books}
         });
     }
 
