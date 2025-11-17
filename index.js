@@ -14,6 +14,7 @@ app.post('/books', (req, res) => {
   const {name, year, author, summary, publisher, pageCount, readPage, reading} = req.body;
   const id = nanoid.nanoid(16);
   let finished = false;
+
   if (pageCount === readPage) {
     finished = true;
   };
@@ -22,27 +23,30 @@ app.post('/books', (req, res) => {
   const updatedAt = insertedAt;
 
   const book = {id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt};
+
   if (!name) {
     return res.status(400).json({
       status: 'fail',
       message: 'Gagal menambahkan buku. Mohon isi nama buku',
-      data: {books}
     });
   }
+
+  if(pageCount < readPage) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount'
+    })
+  }
+  
   books.push(book);
-  const formatted = books.map((b) => {
-      return {
-        bookId: b.id,
-        name: b.name,
-        publisher: b.publisher
-      }
-})
-  res.status(201).json({
+  console.log(books)
+    res.status(201).json({
     status: 'success',
     message: 'Buku berhasil ditambahkan',
-    data: {formatted}
+    data: {bookId: book.id}
   });
-});
+})
+
 
 // get all books
 app.get('/books', (req, res) => {
@@ -64,7 +68,7 @@ app.get('/books/:bookId', (req, res) => {
   const { bookId } = req.params;
   const book = books.find((b) => b.id === bookId);
   if (book !== undefined) {
-    return res.status(200).json({status: 'success', data: {book}}); 
+    return res.status(200).json({status: 'success', data: {book: book}}); 
   } else {
     // Respons ketika buku tidak ditemukan
     return res.status(404).json({
@@ -85,8 +89,14 @@ app.put('/books/:bookId', (req, res) => {
         return res.status(400).json({
             status: 'fail',
             message: 'Gagal memperbarui buku. Mohon isi nama buku',
-            data: {books}
         });
+    }
+
+    if(readPage > pageCount ) {
+      res.status(400).json({
+        status: 'fail',
+        message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount'
+      })
     }
 
     // --- 3. Cari Index Buku yang Akan Diperbarui ---
@@ -146,11 +156,11 @@ app.delete('/books/:bookId', (req, res) => {
   } else {
     return res.status(404).json({
       status: 'fail',
-      message: 'Buku tidak ditemukan'
+      message: 'Buku gagal dihapus. Id tidak ditemukan'
     });
   };
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Server app listening on port ${port}`);
 })
